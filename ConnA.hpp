@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#define uchar unsigned char
+
 class IPPacket {
     private:
         uint32_t sec;  //開始抓封包以來所經過的秒數
@@ -28,17 +30,19 @@ class IPPacketInput{
         uint32_t c;     //Current Index
 
     public:
+        const static IPPacket NULL_PACKET;
+
         IPPacketInput();
 
         const IPPacket& next(bool &more); //下一個封包的位址，輸出會放在output變數，當沒有封包的時候回傳false
         void reset(); //重設目前封包
-        uint32_t cur(); //目前是第幾個封包(0-based)
+        uint32_t cur() const; //目前是第幾個封包(0-based)
 
         uint32_t N() const;   //取得有幾個封包
         uint32_t Count() const;
         uint32_t Length() const;
 
-        const IPPacket& operator[](uint32_t index) const; //Exception 隨機存取用
+        const IPPacket& operator[](uint32_t index) const; //Exception(const char *) 隨機存取用
 };
 
 class ConnState{
